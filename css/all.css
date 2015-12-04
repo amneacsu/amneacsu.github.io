@@ -1,0 +1,9 @@
+body {
+    font-family: Menlo, monospace;
+    white-space: pre-wrap;
+    line-height: 1.33;
+}
+
+lights {
+    white-space: pre;
+}
