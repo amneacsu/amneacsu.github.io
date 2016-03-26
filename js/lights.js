@@ -10,23 +10,14 @@
     return min + Math.floor(Math.random() * max);
   },
 
-  hook = function(selector) {
-    elem = document.querySelector(selector);
-
-    var i = 0;
-    while (i < len) {
-      lights.push({ freq: randomInt(i + 1, i * 64), flag: false });
-      i += 1;
-    }
-
-    tick();
+  light = function(l, i) {
+    return { freq: randomInt(i + 1, i * 64) };
   },
 
-  iterate = function(c) {
-    for (var i = 0; i < len; i += 1) {
-      var l = lights[i];
-      c.call(null, l);
-    }
+  hook = function(selector) {
+    elem = document.querySelector(selector);
+    lights = Array(len).fill(null).map(light);
+    tick();
   },
 
   update = function(light) {
@@ -35,7 +26,7 @@
 
   tick = function() {
     gen += 1;
-    iterate(update);
+    lights.map(update);
     write();
     window.requestAnimationFrame(tick);
   },
@@ -47,7 +38,7 @@
   write = function() {
     var scrn = [];
 
-    iterate(function(light) {
+    lights.map(function(light) {
       scrn.push(led(light.on));
     });
 
