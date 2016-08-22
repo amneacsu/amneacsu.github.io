@@ -17,3 +17,19 @@ lights {
 warn {
     color: #f00;
 }
+
+[href="https://amneacsu.github.io/same"] {
+  content: "";
+  display: block;
+  margin: 100px auto;
+  width: 32px;
+  height: 32px;
+  background: hsla(300, 100%, 50%, 1.00);
+  border-radius: 100%;
+  transition: all 400ms ease-out;
+}
+
+[href="https://amneacsu.github.io/same"]:hover {
+  transform: scale(2);
+  box-shadow: 0 0 64px hsla(300, 100%, 50%, 1.00)
+}
