@@ -26,7 +26,7 @@ warn {
   height: 32px;
   background: hsla(300, 100%, 50%, 1.00);
   border-radius: 100%;
-  transition: all 400ms ease-out;
+  transition: all 150ms ease-out;
 }
 
 .same:hover {
