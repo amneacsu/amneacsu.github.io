@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "http-server"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
     "url": "https://github.com/amneacsu/amneacsu.github.io/issues"
   },
   "homepage": "https://github.com/amneacsu/amneacsu.github.io#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
 }
