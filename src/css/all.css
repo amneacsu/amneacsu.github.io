@@ -1,14 +1,14 @@
 @font-face {
-    src: url('./mononoki-Regular.otf');
-    font-family: Mononoki;
+  src: url('./mononoki-Regular.otf');
+  font-family: Mononoki;
 }
 
 body {
-    font-family: Mononoki, monospace;
-    white-space: pre-wrap;
-    font-size: 20px;
+  font-family: Mononoki, monospace;
+  white-space: pre-wrap;
+  font-size: 20px;
 }
 
 lights {
-    white-space: pre;
+  white-space: pre;
 }
