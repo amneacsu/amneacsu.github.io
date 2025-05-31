@@ -1,0 +1,45 @@
+:root {
+  --color-border: hsla(58, 29%, 10%, 1);
+  --canvas-color: hsla(58, 29%, 50%, 1);
+}
+
+body {
+  font-family: monospace;
+  background-color: hsla(58, 29%, 45%, 1);
+}
+
+button {
+  font-size: 20px;
+}
+
+canvas {
+  display: block;
+  margin: 10px;
+}
+
+audio {
+  display: block;
+  width: 100%;
+}
+
+fieldset {
+  legend {
+    font-size: 20px;
+    background-color: var(--canvas-color);
+  }
+}
+
+canvas, fieldset {
+  border: var(--color-border) 3px solid;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, .2);
+  background-color: var(--canvas-color);
+}
+
+pre {
+  font-size: 20px;
+  background-color: hsla(58, 29%, 10%, 1);
+  color: hsla(58, 29%, 80%, 1);
+  white-space: pre;
+  padding: 10px;
+  border-radius: 4px;
+}

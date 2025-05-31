@@ -34,4 +34,27 @@ export default {
       });
     }),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.(flac|mp3|mp4|m4a|opus|wav)$/,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.jsx$/,
+        use: {
+          loader: 'builtin:swc-loader',
+          options: {
+            jsc: {
+              parser: {
+                syntax: 'ecmascript',
+                jsx: true,
+              },
+            },
+          },
+        },
+        type: 'javascript/auto',
+      },
+    ],
+  },
 };
