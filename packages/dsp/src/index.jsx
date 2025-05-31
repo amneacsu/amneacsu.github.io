@@ -53,19 +53,21 @@ const fileIdToOption = (id) => {
 };
 
 const App = () => {
+  const audioRef = React.useRef();
   const [audioContextState, setAudioContextState] = React.useState('none');
   const [selectedFileId, setSelectedFileId] = React.useState(fileOptions.at(0)?.value);
   const audioContextRef = React.useRef();
-  const audioSourceRef = React.useRef();
 
   const currentFile = fileIdToOption(selectedFileId);
 
   const handleInitContext = React.useCallback(() => {
-    if (audioContextRef.current) console.warn('There is already an AudioContext set.');
-    if (audioSourceRef.current) console.warn('There is already an AudioSource set.');
+    if (audioContextRef.current) {
+      return;
+      // console.warn('There is already an AudioContext set.');
+    }
     const audioContext = new window.AudioContext();
 
-    const audioSource = new ElementSource(audioContext, currentFile.file);
+    const audioSourceNode = audioContext.createMediaElementSource(audioRef.current);
 
     const audioSink = new AudioSink(audioContext);
 
@@ -75,28 +77,27 @@ const App = () => {
     const vsink4 = new SpectrogramVisualizerSink(audioContext);
     const vsink5 = new SpectrumVisualizerSink(audioContext);
 
-    audioSource.node.connect(vsink1);
-    audioSource.node.connect(vsink2);
-    audioSource.node.connect(vsink3);
-    audioSource.node.connect(vsink4);
-    audioSource.node.connect(vsink5);
-    audioSource.node.connect(audioSink);
+    audioSourceNode.connect(vsink1);
+    audioSourceNode.connect(vsink2);
+    audioSourceNode.connect(vsink3);
+    audioSourceNode.connect(vsink4);
+    audioSourceNode.connect(vsink5);
+    audioSourceNode.connect(audioSink);
 
     setAudioContextState(audioContext.state);
     audioContextRef.current = audioContext;
-    audioSourceRef.current = audioSource;
   }, [currentFile]);
 
   const handleChangeSelectedFile = React.useCallback((event) => {
     setSelectedFileId(event.target.value);
-    if (audioSourceRef.current) {
-      audioSourceRef.current.loadFile(fileIdToOption(event.target.value)?.file);
+    if (audioRef.current) {
+      audioRef.current.src = fileIdToOption(event.target.value)?.file;
     }
-  }, [audioSourceRef]);
+  }, [audioRef]);
 
   return (
     <div>
-      <>
+      <nav>
         <fieldset>
           <legend>Audio file</legend>
 
@@ -111,22 +112,19 @@ const App = () => {
             })}
           </select>
         </fieldset>
-      </>
 
-      <pre>
-        Audio context state: {audioContextState}<br />
-        Selected file: {currentFile?.label ?? 'none'}
-      </pre>
+        <audio
+          ref={audioRef}
+          controls
+          src={currentFile.file}
+          onPlay={handleInitContext}
+        />
 
-      {audioContextState !== 'running' && (
-        <button 
-          disabled={audioContextState === 'running'}
-          type="button" 
-          onClick={handleInitContext}
-        >
-          Init audio context
-        </button>
-      )}
+        <pre>
+          Audio context state: {audioContextState}<br />
+          Selected file: {currentFile?.label ?? 'none'}
+        </pre>
+      </nav>
     </div>
   );
 };

@@ -33,11 +33,16 @@ export default {
         chunks: [packageName],
       });
     }),
+    new rspack.CopyRspackPlugin({
+      patterns: [
+        { from: 'packages/home/src/images', to: 'images' },
+      ],
+    }),
   ],
   module: {
     rules: [
       {
-        test: /\.(flac|mp3|mp4|m4a|opus|wav)$/,
+        test: /\.(flac|mp3|mp4|m4a|opus|wav|png)$/,
         type: 'asset/resource'
       },
       {

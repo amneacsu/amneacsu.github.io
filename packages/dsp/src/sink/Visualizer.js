@@ -18,7 +18,7 @@ export default class Visualizer {
   constructor(context, params = {}) {
     const {
       width = 640,
-      height = 200,
+      height = 160,
       fftSize = 2048,
       label = '',
     } = params;
