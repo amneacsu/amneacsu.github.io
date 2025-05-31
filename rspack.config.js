@@ -33,5 +33,33 @@ export default {
         chunks: [packageName],
       });
     }),
+    new rspack.CopyRspackPlugin({
+      patterns: [
+        { from: 'packages/home/src/images', to: 'images' },
+      ],
+    }),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.(flac|mp3|mp4|m4a|opus|wav|png)$/,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.jsx$/,
+        use: {
+          loader: 'builtin:swc-loader',
+          options: {
+            jsc: {
+              parser: {
+                syntax: 'ecmascript',
+                jsx: true,
+              },
+            },
+          },
+        },
+        type: 'javascript/auto',
+      },
+    ],
+  },
 };

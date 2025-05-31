@@ -63,3 +63,9 @@ section .container {
     transition: all 150ms ease-out;
   }  
 }
+
+.dsp {
+  background-color: hsla(58, 29%, 45%, 1);
+  display: flex;
+  justify-content: center;
+}
