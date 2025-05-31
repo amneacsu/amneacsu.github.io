@@ -6,6 +6,9 @@
     "start": "rspack serve",
     "build": "rspack build"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/amneacsu/amneacsu.github.io.git"
@@ -19,6 +22,7 @@
   "description": "",
   "devDependencies": {
     "@rspack/cli": "^1.3.10",
-    "@rspack/core": "^1.3.10"
+    "@rspack/core": "^1.3.10",
+    "glob": "^11.0.2"
   }
 }
