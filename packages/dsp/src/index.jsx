@@ -33,7 +33,7 @@ const fileOptions = [
   },
   {
     value: 'axleGrinder',
-    label: 'Pendulum - Axle Grinder (spectrogram drawing, aac, 44100 Hz, stereo, 125 kb/s)',
+    label: 'Pendulum - Axle Grinder (spectrogram drawing @3:52, aac, 44100 Hz, stereo, 125 kb/s)',
     file: axleGrinder,
   },
   {
