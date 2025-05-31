@@ -1,0 +1,16 @@
+{
+  "name": "dsp",
+  "version": "1.0.0",
+  "main": "src/index.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "data": "file:../data",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}
