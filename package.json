@@ -2,8 +2,10 @@
   "name": "amneacsu.github.io",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "check-types": "tsc --incremental --noEmit",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint packages/**/src",
     "start": "rspack serve",
     "build": "rspack build"
   },
@@ -24,8 +26,13 @@
   "devDependencies": {
     "@rspack/cli": "^1.3.10",
     "@rspack/core": "^1.3.10",
+    "@stylistic/eslint-plugin": "^4.4.0",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
+    "@typescript-eslint/eslint-plugin": "^8.33.0",
+    "@typescript-eslint/parser": "^8.33.0",
+    "eslint": "^9.28.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "glob": "^11.0.2",
     "typescript": "^5.8.3"
   }

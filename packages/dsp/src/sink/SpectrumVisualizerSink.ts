@@ -13,7 +13,7 @@ export default class SpectrumVisualizerSink extends Visualizer {
     for (let n = 0; n < data.length; n++) {
       const x = Math.log(n) / wx * width;
       const y = data[n] * height / 256;
-      drawContext.lineTo(x, height - y)
+      drawContext.lineTo(x, height - y);
     }
 
     drawContext.stroke();

@@ -79,7 +79,7 @@ const App = () => {
     setAudioContextState(audioContext.state);
     audioContextRef.current = audioContext;
     audioSourceNodeRef.current = audioSourceNode;
-  }, [currentFile]);
+  }, []);
 
   const handleChangeSelectedFile = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFileId(event.target.value);
