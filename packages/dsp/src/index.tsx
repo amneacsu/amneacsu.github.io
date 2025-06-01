@@ -16,6 +16,7 @@ import WaveVisualizerSink from './sink/WaveVisualizerSink.ts';
 import LapseVisualizerSink from './sink/LapseVisualizerSink.ts';
 import SpectrogramVisualizerSink from './sink/SpectrogramVisualizerSink.ts';
 import SpectrumVisualizerSink from './sink/SpectrumVisualizerSink.ts';
+import { AudioContextProvider, useAudioContext } from './AudioContextProvider.tsx';
 import { VisualSink } from './VisualSink.tsx';
 import './style.css';
 
@@ -60,26 +61,25 @@ const fileIdToOption = (id: string | undefined) => {
 
 const App = () => {
   const audioRef = React.useRef<HTMLAudioElement>(null);
-  const [audioContextState, setAudioContextState] = React.useState('none');
   const [selectedFileId, setSelectedFileId] = React.useState(fileOptions.at(0)?.value);
-  const audioContextRef = React.useRef<AudioContext>(null);
-  const audioSourceNodeRef = React.useRef<MediaElementAudioSourceNode>(null);
+  const [audioSourceNode, setAudioSourceNode] = React.useState<MediaElementAudioSourceNode>();
+
+  const { audioContext, state } = useAudioContext();
 
   const currentFile = fileIdToOption(selectedFileId);
 
-  const handleInitContext = React.useCallback(() => {
-    if (audioContextRef.current || !audioRef.current) {
-      return;
-    }
-    const audioContext = new window.AudioContext();
-    const audioSourceNode = audioContext.createMediaElementSource(audioRef.current);
-    const audioSink = new AudioSink(audioContext);
-    audioSourceNode.connect(audioSink.in);
+  const handlePlay = React.useCallback(() => {
+    audioContext.resume();
+  }, [audioContext]);
 
-    setAudioContextState(audioContext.state);
-    audioContextRef.current = audioContext;
-    audioSourceNodeRef.current = audioSourceNode;
-  }, []);
+  React.useEffect(() => {
+    const audioElement = audioRef.current;
+    if (!audioElement) return;
+    const n = audioContext.createMediaElementSource(audioElement);
+    const audioSink = new AudioSink(audioContext);
+    n.connect(audioSink.in);
+    setAudioSourceNode(n);
+  }, [audioContext]);
 
   const handleChangeSelectedFile = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFileId(event.target.value);
@@ -110,57 +110,51 @@ const App = () => {
           ref={audioRef}
           controls
           src={currentFile?.file}
-          onPlay={handleInitContext}
+          onPlay={handlePlay}
         />
 
         <pre>
-          Audio context state: {audioContextState}<br />
+          Audio context state: {state}<br />
           Selected file: {currentFile?.label ?? 'none'}
         </pre>
       </nav>
-      
-      {audioContextState === 'running' && (
-        <>
-          <VisualSink
-            audioContext={audioContextRef.current}
-            processor={BarVisualizerSink}
-            onLoad={(vsink) => {
-              console.log(vsink);
-              audioSourceNodeRef.current?.connect(vsink.analyser);
-            }}
-          />
-          <VisualSink
-            audioContext={audioContextRef.current}
-            processor={WaveVisualizerSink}
-            onLoad={(vsink) => {
-              audioSourceNodeRef.current?.connect(vsink.analyser);
-            }}
-          />
-          <VisualSink
-            audioContext={audioContextRef.current}
-            processor={LapseVisualizerSink}
-            onLoad={(vsink) => {
-              audioSourceNodeRef.current?.connect(vsink.analyser);
-            }}
-          />
-          <VisualSink
-            audioContext={audioContextRef.current}
-            processor={SpectrogramVisualizerSink}
-            onLoad={(vsink) => {
-              audioSourceNodeRef.current?.connect(vsink.analyser);
-            }}
-          />
-          <VisualSink
-            audioContext={audioContextRef.current}
-            processor={SpectrumVisualizerSink}
-            onLoad={(vsink) => {
-              audioSourceNodeRef.current?.connect(vsink.analyser);
-            }}
-          />
-        </>
-      )}
+
+      <VisualSink
+        processor={BarVisualizerSink}
+        onLoad={(vsink) => {
+          audioSourceNode?.connect(vsink.analyser);
+        }}
+      />
+      <VisualSink
+        processor={WaveVisualizerSink}
+        onLoad={(vsink) => {
+          audioSourceNode?.connect(vsink.analyser);
+        }}
+      />
+      <VisualSink
+        processor={LapseVisualizerSink}
+        onLoad={(vsink) => {
+          audioSourceNode?.connect(vsink.analyser);
+        }}
+      />
+      <VisualSink
+        processor={SpectrogramVisualizerSink}
+        onLoad={(vsink) => {
+          audioSourceNode?.connect(vsink.analyser);
+        }}
+      />
+      <VisualSink
+        processor={SpectrumVisualizerSink}
+        onLoad={(vsink) => {
+          audioSourceNode?.connect(vsink.analyser);
+        }}
+      />
     </div>
   );
 };
 
-root.render(<App />);
+root.render(
+  <AudioContextProvider>
+    <App />
+  </AudioContextProvider>,
+);
