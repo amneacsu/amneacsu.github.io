@@ -32,7 +32,7 @@ export default abstract class Visualizer {
     this.drawContext.fillText(this.label, this.width - 4, 11);
   }
 
-  abstract process(analyser: AnalyserNode, canvasContext: CanvasRenderingContext2D, width: number, height: number): boolean
+  abstract process(analyser: AnalyserNode, canvasContext: CanvasRenderingContext2D, width: number, height: number): boolean;
 
   tick() {
     const keep = this.process(

@@ -1,7 +1,5 @@
 import Visualizer from './Visualizer.ts';
 
-let i = 0;
-
 const add = (a: number, b: number) => a + b;
 
 export default class SpectrogramVisualizerSink extends Visualizer {

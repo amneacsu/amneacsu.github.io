@@ -21,7 +21,7 @@ export const VisualSink = ({
     const pr = new processor(audioContext, canvas); 
     processRef.current = pr;
     onLoad(pr);
-  }, [audioContext]);
+  }, [audioContext, onLoad, processor]);
 
   return (
     <canvas 
