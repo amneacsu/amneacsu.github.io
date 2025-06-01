@@ -4,14 +4,13 @@ import Visualizer from './sink/Visualizer.ts';
 import { useAudioContext } from './AudioContextProvider.tsx';
 
 export const VisualSink = ({
-  onLoad,
+  analyser,
   processor,
 }: {
-  onLoad: (p: Visualizer) => void;
-  processor: { new (audioCtx: AudioContext, canvasElement: HTMLCanvasElement): Visualizer; };
+  analyser: AnalyserNode;
+  processor: { new (audioCtx: AudioContext, canvasElement: HTMLCanvasElement, analyser: AnalyserNode): Visualizer; };
 }) => {
   const { audioContext } = useAudioContext();
-  const processRef = React.useRef<Visualizer>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
@@ -21,10 +20,8 @@ export const VisualSink = ({
       console.warn('no canvas');
       return;
     }
-    const pr = new processor(audioContext, canvas); 
-    processRef.current = pr;
-    onLoad(pr);
-  }, [audioContext, onLoad, processor]);
+    new processor(audioContext, canvas, analyser); 
+  }, [audioContext, processor, analyser]);
 
   return (
     <canvas 
