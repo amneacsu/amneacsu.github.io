@@ -6,7 +6,7 @@ export default abstract class Visualizer {
   fftSize = 2048;
   label = '';
 
-  constructor(audioContext: AudioContext, canvas: HTMLCanvasElement) {
+  constructor(audioContext: AudioContext, canvas: HTMLCanvasElement, analyser: AnalyserNode) {
     const canvasContext = canvas.getContext('2d')!;
     canvasContext.lineWidth = 1;
     canvasContext.strokeStyle = '#3D3B1A';
@@ -15,7 +15,7 @@ export default abstract class Visualizer {
     canvasContext.textAlign = 'right';
     this.drawContext = canvasContext;
     
-    this.analyser = audioContext.createAnalyser();
+    this.analyser = analyser;
     this.analyser.fftSize = this.fftSize;
     this.analyser.smoothingTimeConstant = 0;
 

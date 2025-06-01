@@ -10,13 +10,13 @@ import {
   surround,
 } from 'data';
 
-import AudioSink from './sink/AudioSink.ts';
 import BarVisualizerSink from './sink/BarVisualizerSink.ts';
 import WaveVisualizerSink from './sink/WaveVisualizerSink.ts';
 import LapseVisualizerSink from './sink/LapseVisualizerSink.ts';
 import SpectrogramVisualizerSink from './sink/SpectrogramVisualizerSink.ts';
 import SpectrumVisualizerSink from './sink/SpectrumVisualizerSink.ts';
 import { AudioContextProvider, useAudioContext } from './AudioContextProvider.tsx';
+import { useAudioGraph, VisualizerStyle } from './AudioGraph.ts';
 import { VisualSink } from './VisualSink.tsx';
 import './style.css';
 
@@ -59,96 +59,105 @@ const fileIdToOption = (id: string | undefined) => {
   return fileOptions.find((o) => o.value === id);
 };
 
-const App = () => {
-  const audioRef = React.useRef<HTMLAudioElement>(null);
-  const [selectedFileId, setSelectedFileId] = React.useState(fileOptions.at(0)?.value);
-  const [audioSourceNode, setAudioSourceNode] = React.useState<MediaElementAudioSourceNode>();
-
-  const { audioContext, state } = useAudioContext();
-
-  const currentFile = fileIdToOption(selectedFileId);
-
-  const handlePlay = React.useCallback(() => {
-    audioContext.resume();
-  }, [audioContext]);
+const AudioElementNode = ({
+  audio,
+}: {
+  audio: HTMLAudioElement;
+}) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [selectedFileId, setSelectedFileId] = React.useState(() => {
+    return fileOptions.find((option) => option.file === audio.src)?.value;
+  });
 
   React.useEffect(() => {
-    const audioElement = audioRef.current;
-    if (!audioElement) return;
-    const n = audioContext.createMediaElementSource(audioElement);
-    const audioSink = new AudioSink(audioContext);
-    n.connect(audioSink.in);
-    setAudioSourceNode(n);
-  }, [audioContext]);
+    const div = containerRef.current;
+    if (!div) return undefined;
+    div.appendChild(audio);
+    return () => {
+      div.removeChild(audio);
+    };
+  }, [audio]);
 
   const handleChangeSelectedFile = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFileId(event.target.value);
-    if (audioRef.current) {
-      audioRef.current.src = fileIdToOption(event.target.value)?.file;
-    }
-  }, [audioRef]);
+    const currentFile = fileIdToOption(event.target.value);
+    audio.src = currentFile?.file;
+  }, [audio]);
+
+  return (
+    <>
+      <fieldset>
+        <legend>Audio file</legend>
+
+        <select
+          onChange={handleChangeSelectedFile}
+          value={selectedFileId}
+        >
+          {fileOptions.map((fileOption) => {
+            return (
+              <option key={fileOption.value} value={fileOption.value}>{fileOption.label}</option>
+            );
+          })}
+        </select>
+      </fieldset>
+
+      <div ref={containerRef} />
+    </>
+  );
+};
+
+const getProcessor = (style: VisualizerStyle) => {
+  switch (style) {
+    case 'bar':
+      return BarVisualizerSink;
+    case 'wave':
+      return WaveVisualizerSink;
+    case 'lapse':
+      return LapseVisualizerSink;
+    case 'spectrogram':
+      return SpectrogramVisualizerSink;
+    case 'spectrum':
+      return SpectrumVisualizerSink;
+    default:
+      return null;
+  }
+};
+
+const App = () => {
+  const graph = useAudioGraph();
+  const { state } = useAudioContext();
 
   return (
     <div>
       <nav>
-        <fieldset>
-          <legend>Audio file</legend>
-
-          <select
-            onChange={handleChangeSelectedFile}
-            value={selectedFileId}
-          >
-            {fileOptions.map((fileOption) => {
-              return (
-                <option key={fileOption.value} value={fileOption.value}>{fileOption.label}</option>
-              );
-            })}
-          </select>
-        </fieldset>
-
-        <audio
-          ref={audioRef}
-          controls
-          src={currentFile?.file}
-          onPlay={handlePlay}
-        />
-
         <pre>
           Audio context state: {state}<br />
-          Selected file: {currentFile?.label ?? 'none'}
         </pre>
       </nav>
 
-      <VisualSink
-        processor={BarVisualizerSink}
-        onLoad={(vsink) => {
-          audioSourceNode?.connect(vsink.analyser);
-        }}
-      />
-      <VisualSink
-        processor={WaveVisualizerSink}
-        onLoad={(vsink) => {
-          audioSourceNode?.connect(vsink.analyser);
-        }}
-      />
-      <VisualSink
-        processor={LapseVisualizerSink}
-        onLoad={(vsink) => {
-          audioSourceNode?.connect(vsink.analyser);
-        }}
-      />
-      <VisualSink
-        processor={SpectrogramVisualizerSink}
-        onLoad={(vsink) => {
-          audioSourceNode?.connect(vsink.analyser);
-        }}
-      />
-      <VisualSink
-        processor={SpectrumVisualizerSink}
-        onLoad={(vsink) => {
-          audioSourceNode?.connect(vsink.analyser);
-        }}
-      />
+      {graph.nodes.map((node) => {
+        switch (node.type) {
+          case 'AudioElement':
+            return (
+              <AudioElementNode 
+                key={node.id} 
+                audio={node.audio} 
+              />
+            );
+          case 'Visualizer':
+            const visualizer = getProcessor(node.style);
+            if (!visualizer) return null;
+            return (
+              <VisualSink
+                key={node.id}
+                processor={visualizer}
+                analyser={node.node}
+              />
+            );
+          default:
+            return null;
+        }
+      })}
     </div>
   );
 };

@@ -46,6 +46,7 @@ pre {
   white-space: pre;
   padding: 10px;
   border-radius: 4px;
+  margin-bottom: 16px;
 }
 
 select {
@@ -53,7 +54,5 @@ select {
 }
 
 nav {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+
 }
