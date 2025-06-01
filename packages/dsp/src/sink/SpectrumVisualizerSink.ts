@@ -1,7 +1,7 @@
-import Visualizer from './Visualizer.js';
+import Visualizer from './Visualizer.ts';
 
 export default class SpectrumVisualizerSink extends Visualizer {
-  process(analyser, drawContext, width, height) {
+  process(analyser: AnalyserNode, drawContext: CanvasRenderingContext2D, width: number, height: number) {
     this.clear();
 
     const data = new Uint8Array(analyser.frequencyBinCount);

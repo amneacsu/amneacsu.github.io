@@ -46,14 +46,14 @@ export default {
         type: 'asset/resource'
       },
       {
-        test: /\.jsx$/,
+        test: /\.tsx?$/,
         use: {
           loader: 'builtin:swc-loader',
           options: {
             jsc: {
               parser: {
-                syntax: 'ecmascript',
-                jsx: true,
+                syntax: 'typescript',
+                tsx: true,
               },
             },
           },

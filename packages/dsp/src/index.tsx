@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { 
@@ -10,16 +10,16 @@ import {
   surround,
 } from 'data';
 
-import AudioSink from './sink/AudioSink.js';
-import BarVisualizerSink from './sink/BarVisualizerSink.js';
-import WaveVisualizerSink from './sink/WaveVisualizerSink.js';
-import LapseVisualizerSink from './sink/LapseVisualizerSink.js';
-import SpectrogramVisualizerSink from './sink/SpectrogramVisualizerSink.js';
-import SpectrumVisualizerSink from './sink/SpectrumVisualizerSink.js';
-import { VisualSink } from './VisualSink.jsx';
+import AudioSink from './sink/AudioSink.ts';
+import BarVisualizerSink from './sink/BarVisualizerSink.ts';
+import WaveVisualizerSink from './sink/WaveVisualizerSink.ts';
+import LapseVisualizerSink from './sink/LapseVisualizerSink.ts';
+import SpectrogramVisualizerSink from './sink/SpectrogramVisualizerSink.ts';
+import SpectrumVisualizerSink from './sink/SpectrumVisualizerSink.ts';
+import { VisualSink } from './VisualSink.tsx';
 import './style.css';
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById('root')!);
 
 const fileOptions = [
   {
@@ -54,34 +54,34 @@ const fileOptions = [
   },
 ];
 
-const fileIdToOption = (id) => {
+const fileIdToOption = (id: string | undefined) => {
   return fileOptions.find((o) => o.value === id);
 };
 
 const App = () => {
-  const audioRef = React.useRef();
+  const audioRef = React.useRef<HTMLAudioElement>(null);
   const [audioContextState, setAudioContextState] = React.useState('none');
   const [selectedFileId, setSelectedFileId] = React.useState(fileOptions.at(0)?.value);
-  const audioContextRef = React.useRef();
-  const audioSourceNodeRef = React.useRef();
+  const audioContextRef = React.useRef<AudioContext>(null);
+  const audioSourceNodeRef = React.useRef<MediaElementAudioSourceNode>(null);
 
   const currentFile = fileIdToOption(selectedFileId);
 
   const handleInitContext = React.useCallback(() => {
-    if (audioContextRef.current) {
+    if (audioContextRef.current || !audioRef.current) {
       return;
     }
     const audioContext = new window.AudioContext();
     const audioSourceNode = audioContext.createMediaElementSource(audioRef.current);
     const audioSink = new AudioSink(audioContext);
-    audioSourceNode.connect(audioSink);
+    audioSourceNode.connect(audioSink.in);
 
     setAudioContextState(audioContext.state);
     audioContextRef.current = audioContext;
     audioSourceNodeRef.current = audioSourceNode;
   }, [currentFile]);
 
-  const handleChangeSelectedFile = React.useCallback((event) => {
+  const handleChangeSelectedFile = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFileId(event.target.value);
     if (audioRef.current) {
       audioRef.current.src = fileIdToOption(event.target.value)?.file;
@@ -109,7 +109,7 @@ const App = () => {
         <audio
           ref={audioRef}
           controls
-          src={currentFile.file}
+          src={currentFile?.file}
           onPlay={handleInitContext}
         />
 
@@ -125,35 +125,36 @@ const App = () => {
             audioContext={audioContextRef.current}
             processor={BarVisualizerSink}
             onLoad={(vsink) => {
-              audioSourceNodeRef.current.connect(vsink);
+              console.log(vsink);
+              audioSourceNodeRef.current?.connect(vsink.analyser);
             }}
           />
           <VisualSink
             audioContext={audioContextRef.current}
             processor={WaveVisualizerSink}
             onLoad={(vsink) => {
-              audioSourceNodeRef.current.connect(vsink);
+              audioSourceNodeRef.current?.connect(vsink.analyser);
             }}
           />
           <VisualSink
             audioContext={audioContextRef.current}
             processor={LapseVisualizerSink}
             onLoad={(vsink) => {
-              audioSourceNodeRef.current.connect(vsink);
+              audioSourceNodeRef.current?.connect(vsink.analyser);
             }}
           />
           <VisualSink
             audioContext={audioContextRef.current}
             processor={SpectrogramVisualizerSink}
             onLoad={(vsink) => {
-              audioSourceNodeRef.current.connect(vsink);
+              audioSourceNodeRef.current?.connect(vsink.analyser);
             }}
           />
           <VisualSink
             audioContext={audioContextRef.current}
             processor={SpectrumVisualizerSink}
             onLoad={(vsink) => {
-              audioSourceNodeRef.current.connect(vsink);
+              audioSourceNodeRef.current?.connect(vsink.analyser);
             }}
           />
         </>

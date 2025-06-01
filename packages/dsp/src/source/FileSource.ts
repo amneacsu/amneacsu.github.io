@@ -1,5 +1,5 @@
 export default class FileSource {
-  constructor(context, path) {
+  constructor(context: AudioContext, path: string) {
     const source = context.createBufferSource();
 
     fetch(path)

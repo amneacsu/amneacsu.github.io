@@ -1,11 +1,11 @@
-import Visualizer from './Visualizer.js';
+import Visualizer from './Visualizer.ts';
 
 let i = 0;
 
-const add = (a, b) => a + b;
+const add = (a: number, b: number) => a + b;
 
 export default class SpectrogramVisualizerSink extends Visualizer {
-  process(analyser, drawContext, width, height) {
+  process(analyser: AnalyserNode, drawContext: CanvasRenderingContext2D, width: number, height: number) {
     this.offset(-1, 0);
 
     const data = new Uint8Array(analyser.frequencyBinCount);

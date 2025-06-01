@@ -1,7 +1,7 @@
-import Visualizer from './Visualizer.js';
+import Visualizer from './Visualizer.ts';
 
 export default class WaveVisualizerSink extends Visualizer {
-  process(analyser, drawContext, width, height) {
+  process(analyser: AnalyserNode, drawContext: CanvasRenderingContext2D, width: number, height: number) {
     this.clear();
 
     const b = analyser.frequencyBinCount;
