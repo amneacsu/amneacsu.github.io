@@ -1,26 +1,27 @@
 (function() {
+  let elem: Element | null;
+
   var
-  elem,
   len = 32, // There are 32 lights! ~ Cpt. JLP
-  lights = [],
+  lights: { on?: boolean; freq: number }[] = [],
   gen = 0,
   ghosting = 32,
 
-  randomInt = function(min, max) {
+  randomInt = function(min: number, max: number) {
     return min + Math.floor(Math.random() * max);
   },
 
-  light = function(l, i) {
+  light = function(l: number, i: number) {
     return { freq: randomInt(i + 1, i * 64) };
   },
 
-  hook = function(selector) {
+  hook = function(selector: string) {
     elem = document.querySelector(selector);
     lights = Array(len).fill(null).map(light);
     tick();
   },
 
-  update = function(light) {
+  update = function(light: { on?: boolean; freq: number }) {
     light.on = gen % light.freq < ghosting;
   },
 
@@ -31,18 +32,20 @@
     window.requestAnimationFrame(tick);
   },
 
-  led = function(flag) {
+  led = function(flag: boolean) {
     return flag ? '&#9608;' : ' ';
   },
 
   write = function() {
-    var scrn = [];
+    const scrn: string[] = [];
 
     lights.map(function(light) {
-      scrn.push(led(light.on));
+      scrn.push(led(light.on ?? false));
     });
 
-    elem.innerHTML = scrn.join(' ');
+    if (elem) {
+      elem.innerHTML = scrn.join(' ');
+    }
   };
 
   hook('lights');

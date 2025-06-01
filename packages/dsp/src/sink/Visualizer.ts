@@ -1,11 +1,13 @@
-export default class Visualizer {
-  constructor(audioContext, canvas) {
-    this.width = 640;
-    this.height = 160;
-    this.fftSize = 2048;
-    this.label = '';
+export default abstract class Visualizer {
+  analyser: AnalyserNode;
+  drawContext: CanvasRenderingContext2D;
+  width = 640;
+  height = 160;
+  fftSize = 2048;
+  label = '';
 
-    const canvasContext = canvas.getContext('2d');
+  constructor(audioContext: AudioContext, canvas: HTMLCanvasElement) {
+    const canvasContext = canvas.getContext('2d')!;
     canvasContext.lineWidth = 1;
     canvasContext.strokeStyle = '#3D3B1A';
     canvasContext.fillStyle = '#3D3B1A';
@@ -18,11 +20,9 @@ export default class Visualizer {
     this.analyser.smoothingTimeConstant = 0;
 
     this.tick();
-
-    return this.analyser;
   }
 
-  offset(x, y) {
+  offset(x: number, y: number) {
     const imageData = this.drawContext.getImageData(x * -1, y, this.width + x, this.height - y);
     this.drawContext.putImageData(imageData, 0, 0);
   }
@@ -31,6 +31,8 @@ export default class Visualizer {
     this.drawContext.clearRect(0, 0, this.width, this.height);
     this.drawContext.fillText(this.label, this.width - 4, 11);
   }
+
+  abstract process(analyser: AnalyserNode, canvasContext: CanvasRenderingContext2D, width: number, height: number): boolean
 
   tick() {
     const keep = this.process(

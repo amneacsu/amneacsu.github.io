@@ -1,5 +1,5 @@
 export default class MicSource {
-  constructor(context) {
+  constructor(context: AudioContext) {
     const node = context.createGain();
 
     navigator.mediaDevices.getUserMedia({ audio: true })

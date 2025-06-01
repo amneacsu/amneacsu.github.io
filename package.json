@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "check-types": "tsc --incremental --noEmit",
     "start": "rspack serve",
     "build": "rspack build"
   },
@@ -23,6 +24,9 @@
   "devDependencies": {
     "@rspack/cli": "^1.3.10",
     "@rspack/core": "^1.3.10",
-    "glob": "^11.0.2"
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "glob": "^11.0.2",
+    "typescript": "^5.8.3"
   }
 }

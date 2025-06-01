@@ -1,5 +1,5 @@
 export default class LowPassFilter {
-  constructor(context, cutoff) {
+  constructor(context: AudioContext, cutoff: number) {
     const filter = context.createBiquadFilter();
 
     filter.type = 'lowpass';
