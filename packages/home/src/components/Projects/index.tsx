@@ -1,9 +1,11 @@
 import * as React from 'react';
+import * as S from './styles.ts';
+import { Grid } from '../../elements/Grid.ts';
 
 export const Projects = () => {
   return (
-    <section className="projects">
-      <div className="grid">
+    <S.Projects>
+      <Grid>
         <h2>Projects</h2>
 
         <br /><br />
@@ -13,7 +15,7 @@ export const Projects = () => {
 
         <h3>audio visualizers</h3>
         <a href="./dsp"><img src="./images/dsp.png" /></a>
-      </div>
-    </section>
+      </Grid>
+    </S.Projects>
   );
 };

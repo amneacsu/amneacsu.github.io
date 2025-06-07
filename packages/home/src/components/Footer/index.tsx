@@ -1,8 +1,9 @@
 import * as React from 'react';
+import * as S from './styles.ts';
 
 export const Footer = () => {
   return (
-    <footer className="footer">
+    <S.Footer>
       <div>
         &copy; ?
       </div>
@@ -24,6 +25,6 @@ export const Footer = () => {
       </nav>
 
       <a href="#" onClick={() => { alert('You can\'t afford me!'); return false; }}>Hire me</a>
-    </footer>
+    </S.Footer>
   );
 };

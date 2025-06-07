@@ -1,7 +1,7 @@
 import * as React from 'react';
-
 import { heroAnim } from './hero.ts';
 import { lightsFunc } from "./lights.ts";
+import * as S from './styles.ts';
 
 export const Hero = () => {
   const lightsRef = React.useRef<HTMLDivElement>(null);
@@ -17,7 +17,7 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section className="hero">
+    <S.Hero>
       <div className="warn">
         ACHTUNG!
         <br /><br />
@@ -31,6 +31,6 @@ export const Hero = () => {
       </div>
       <div ref={lightsRef} className="lights"></div>
       <div ref={dixieFlatline}></div>
-    </section>
+    </S.Hero>
   );
 };
