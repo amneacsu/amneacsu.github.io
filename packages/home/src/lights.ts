@@ -2,7 +2,7 @@
   let elem: Element | null;
 
   var
-    len = 32, // There are 32 lights! ~ Cpt. JLP
+    len = 24, // There are 32 lights! ~ Cpt. JLP
     lights: { on?: boolean; freq: number }[] = [],
     gen = 0,
     ghosting = 32,
@@ -48,5 +48,5 @@
       }
     };
 
-  hook('lights');
+  hook('.lights');
 })();

@@ -42,7 +42,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.(flac|mp3|mp4|m4a|opus|wav|png)$/,
+        test: /\.(flac|mp3|mp4|m4a|opus|wav|png|gif)$/,
         type: 'asset/resource'
       },
       {
