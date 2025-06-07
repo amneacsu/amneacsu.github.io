@@ -9,8 +9,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "data": "file:../data",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "data": "file:../data"
+  },
+  "peerDependencies": {
+    "react": "19",
+    "react-dom": "19"
   }
 }

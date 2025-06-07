@@ -36,5 +36,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "glob": "^11.0.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

@@ -1,6 +1,4 @@
-(function() {
-  let elem: Element | null;
-
+export const lightsFunc = (elem: Element) => {
   var
     len = 24, // There are 32 lights! ~ Cpt. JLP
     lights: { on?: boolean; freq: number }[] = [],
@@ -13,12 +11,6 @@
 
     light = function(l: number, i: number) {
       return { freq: randomInt(i + 1, i * 64) };
-    },
-
-    hook = function(selector: string) {
-      elem = document.querySelector(selector);
-      lights = Array(len).fill(null).map(light);
-      tick();
     },
 
     update = function(l: { on?: boolean; freq: number }) {
@@ -48,5 +40,6 @@
       }
     };
 
-  hook('.lights');
-})();
+  lights = Array(len).fill(null).map(light);
+  tick();
+};
