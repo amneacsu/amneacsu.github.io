@@ -1,3 +1,4 @@
+import importPlugin from 'eslint-plugin-import';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import stylisticPlugin from '@stylistic/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
@@ -13,11 +14,13 @@ export default [
       },
     },
     plugins: {
+      import: importPlugin,
       'react-hooks': reactHooksPlugin,
       '@stylistic': stylisticPlugin,
       '@typescript-eslint': tsPlugin,
     },
     rules: {
+      'import/extensions': ['error', 'ignorePackages'],
       'no-shadow': 'error',
       'react-hooks/exhaustive-deps': 'error',
       'react-hooks/rules-of-hooks': 'error',
