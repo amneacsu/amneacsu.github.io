@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { 
+import {
   axleGrinder,
   beeMoved,
   easyStreet,
@@ -15,7 +15,7 @@ import WaveVisualizerSink from './sink/WaveVisualizerSink.ts';
 import LapseVisualizerSink from './sink/LapseVisualizerSink.ts';
 import SpectrogramVisualizerSink from './sink/SpectrogramVisualizerSink.ts';
 import SpectrumVisualizerSink from './sink/SpectrumVisualizerSink.ts';
-import { AudioContextProvider, useAudioContext } from './AudioContextProvider.tsx';
+import { AudioContextProvider } from './AudioContextProvider.tsx';
 import { useAudioGraph, VisualizerStyle } from './AudioGraph.ts';
 import { VisualSink } from './VisualSink.tsx';
 import './style.css';
@@ -125,23 +125,16 @@ const getProcessor = (style: VisualizerStyle) => {
 
 const App = () => {
   const graph = useAudioGraph();
-  const { state } = useAudioContext();
 
   return (
-    <div>
-      <nav>
-        <pre>
-          Audio context state: {state}<br />
-        </pre>
-      </nav>
-
+    <div className="grid">
       {graph.nodes.map((node) => {
         switch (node.type) {
           case 'AudioElement':
             return (
-              <AudioElementNode 
-                key={node.id} 
-                audio={node.audio} 
+              <AudioElementNode
+                key={node.id}
+                audio={node.audio}
               />
             );
           case 'Visualizer':

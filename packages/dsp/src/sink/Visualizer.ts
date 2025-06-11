@@ -1,8 +1,8 @@
 export default abstract class Visualizer {
   analyser: AnalyserNode;
   drawContext: CanvasRenderingContext2D;
-  width = 640;
-  height = 160;
+  width = 960;
+  height = 100;
   fftSize = 2048;
   label = '';
 
@@ -14,7 +14,7 @@ export default abstract class Visualizer {
     canvasContext.font = '10px monospace';
     canvasContext.textAlign = 'right';
     this.drawContext = canvasContext;
-    
+
     this.analyser = analyser;
     this.analyser.fftSize = this.fftSize;
     this.analyser.smoothingTimeConstant = 0;
