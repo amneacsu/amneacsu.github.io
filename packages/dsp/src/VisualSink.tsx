@@ -20,14 +20,14 @@ export const VisualSink = ({
       console.warn('no canvas');
       return;
     }
-    new processor(audioContext, canvas, analyser); 
+    new processor(audioContext, canvas, analyser);
   }, [audioContext, processor, analyser]);
 
   return (
-    <canvas 
+    <canvas
       ref={canvasRef}
-      width={640} 
-      height={160} 
+      width={960}
+      height={100}
     />
   );
 };
