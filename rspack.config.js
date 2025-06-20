@@ -1,9 +1,12 @@
 import { rspack } from '@rspack/core';
 import fs from 'fs';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { glob } from 'glob';
 
 import pack from './package.json' with { type: "json" };
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const packageNames = glob
   .sync(pack.workspaces[0], { cwd: '.', absolute: true })
@@ -61,5 +64,15 @@ export default {
         type: 'javascript/auto',
       },
     ],
+    parser: {
+      javascript: {
+        worker: ['AudioWorkletUrl from audio-worklet', '...'],
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      'audio-worklet': path.resolve(__dirname, 'packages/zxfer2/src/worklets/index.ts'),
+    },
   },
 };

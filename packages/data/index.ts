@@ -1,3 +1,6 @@
+export { default as badWav } from './audio/bad.wav';
+export { default as jetpac } from './audio/Jetpac.wav';
+export { default as zynaps } from './audio/Zynaps.wav';
 export { default as file1 } from './audio/1.mp3';
 export { default as modem } from './audio/modem.mp3';
 export { default as surround } from './audio/surround.mp4';

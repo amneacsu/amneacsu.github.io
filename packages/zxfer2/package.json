@@ -1,0 +1,17 @@
+{
+  "name": "zxfer2",
+  "version": "1.0.0",
+  "main": "./src/index.tsx",
+  "type": "module",
+  "author": "Andrei Neacșu <andrei.neacsu@ownzones.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/audioworklet": "^0.0.22",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

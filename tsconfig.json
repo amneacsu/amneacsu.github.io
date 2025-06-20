@@ -2,7 +2,13 @@
   "compilerOptions": {
     "noEmit": true,
     "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "strict": true
+    "strict": true,
+    "module": "nodenext",
+    "skipLibCheck": true,
+    "paths": {
+      "audio-worklet": ["./packages/zxfer2/src/worklets/index.ts"],
+    },
   }
 }
