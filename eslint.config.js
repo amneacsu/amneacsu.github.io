@@ -26,6 +26,7 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/indent': ['error', 2],
+      '@stylistic/quotes': ['error', 'single'],
       '@stylistic/semi': ['error', 'always'],
       '@typescript-eslint/no-unused-vars': ['error'],
     },
