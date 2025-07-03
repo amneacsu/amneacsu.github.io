@@ -35,6 +35,8 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install npm dependencies
         run: npm install
+      - name: Check types
+        run: npm run check-types
       - name: Build
         run: npm run build
       - name: Upload artifact

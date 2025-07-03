@@ -1,24 +1,12 @@
 import { rspack } from '@rspack/core';
-import fs from 'fs';
-import path from 'path';
-import { glob } from 'glob';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-import pack from './package.json' with { type: "json" };
-
-const packageNames = glob
-  .sync(pack.workspaces[0], { cwd: '.', absolute: true })
-  .filter((packagePath) => {
-    return fs.existsSync(path.join(packagePath, 'src', 'index.html'));
-  })
-  .map((packagePath) => path.basename(packagePath));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default {
-  entry: packageNames.reduce((acc, packageName) => {
-    return {
-      ...acc,
-      [packageName]: path.resolve('packages', packageName),
-    };
-  }, {}),
+  entry: path.join(__dirname, 'src', 'index.ts'),
   experiments: {
     css: true,
   },
@@ -26,34 +14,29 @@ export default {
     clean: true,
   },
   plugins: [
-    ...packageNames.map((packageName) => {
-      return new rspack.HtmlRspackPlugin({
-        template: path.join('packages', packageName, 'src', 'index.html'),
-        filename: path.join(packageName === 'home' ? '' : packageName, 'index.html'),
-        chunks: [packageName],
-      });
+    new rspack.HtmlRspackPlugin({
+      template: path.join('src', 'index.html'),
     }),
     new rspack.CopyRspackPlugin({
       patterns: [
-        { from: 'packages/home/src/images', to: 'images' },
+        { from: path.join('src', 'images'), to: 'images' },
       ],
     }),
   ],
   module: {
     rules: [
       {
-        test: /\.(flac|mp3|mp4|m4a|opus|wav|png|gif)$/,
+        test: /\.(png|gif)$/,
         type: 'asset/resource'
       },
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         use: {
           loader: 'builtin:swc-loader',
           options: {
             jsc: {
               parser: {
                 syntax: 'typescript',
-                tsx: true,
               },
             },
           },
